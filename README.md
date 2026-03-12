@@ -7,6 +7,7 @@
 // @match        *://*/*
 // @grant        none
 // @run-at       document-start
+// @require      https://unpkg.com/three@0.150.0/build/three.min.js
 // ==/UserScript==
 (function () {
     const s = document.createElement("script");
