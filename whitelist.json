@@ -1,1 +1,5 @@
-
+{
+  "match": "https://krunker.io/*",
+  "label": "skibidality",
+  "scriptUrl": "https://raw.githubusercontent.com/pulgax-g/skibidality/refs/heads/main/krunker.open.js"
+}
