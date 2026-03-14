@@ -2,6 +2,9 @@
   {
     "match": "https://krunker.io/*",
     "label": "skibidality",
+    "require": [
+    "https://unpkg.com/three@0.150.0/build/three.min.js"
+  ],
     "scriptUrl": "https://raw.githubusercontent.com/pulgax-g/skibidality/refs/heads/main/krunker.open.js"
   }
 ]
