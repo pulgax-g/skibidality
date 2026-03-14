@@ -1,113 +1,81 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Basic Draggable Window Test</title>
+// create window
+const win = document.createElement("div");
+win.style.position = "fixed";
+win.style.top = "120px";
+win.style.left = "120px";
+win.style.width = "300px";
+win.style.background = "#1e1e1e";
+win.style.color = "white";
+win.style.border = "1px solid #444";
+win.style.fontFamily = "Arial";
+win.style.zIndex = "999999";
+win.style.boxShadow = "0 0 10px rgba(0,0,0,0.6)";
 
-<style>
-body {
-    background:#111;
-    font-family:Arial;
-    color:white;
-}
+// title bar
+const title = document.createElement("div");
+title.textContent = "JS Test Window";
+title.style.background = "#333";
+title.style.padding = "8px";
+title.style.cursor = "move";
+title.style.fontWeight = "bold";
 
-#window {
-    width:300px;
-    position:absolute;
-    top:100px;
-    left:100px;
-    border:1px solid #444;
-    background:#1e1e1e;
-    box-shadow:0 0 10px rgba(0,0,0,0.6);
-}
+// content
+const content = document.createElement("div");
+content.style.padding = "10px";
+content.innerHTML = "Running checks...";
 
-#titlebar {
-    background:#333;
-    padding:8px;
-    cursor:move;
-    font-weight:bold;
-}
+// result list
+const list = document.createElement("ul");
+content.appendChild(list);
 
-#content {
-    padding:10px;
-    font-size:14px;
-}
+win.appendChild(title);
+win.appendChild(content);
+document.body.appendChild(win);
 
-.pass { color:lime; }
-.fail { color:red; }
-</style>
-</head>
-
-<body>
-
-<div id="window">
-    <div id="titlebar">UNC Style Test Window</div>
-    <div id="content">
-        Running checks...
-        <ul id="results"></ul>
-    </div>
-</div>
-
-<script>
-/* -----------------
-   DRAGGING SYSTEM
-------------------*/
-const win = document.getElementById("window");
-const bar = document.getElementById("titlebar");
-
+// dragging
 let dragging = false;
 let offsetX = 0;
 let offsetY = 0;
 
-bar.addEventListener("mousedown", (e)=>{
+title.addEventListener("mousedown", e => {
     dragging = true;
     offsetX = e.clientX - win.offsetLeft;
     offsetY = e.clientY - win.offsetTop;
 });
 
-document.addEventListener("mouseup", ()=>{
-    dragging = false;
+document.addEventListener("mouseup", () => dragging = false);
+
+document.addEventListener("mousemove", e => {
+    if (!dragging) return;
+    win.style.left = e.clientX - offsetX + "px";
+    win.style.top = e.clientY - offsetY + "px";
 });
 
-document.addEventListener("mousemove", (e)=>{
-    if(!dragging) return;
-
-    win.style.left = (e.clientX - offsetX) + "px";
-    win.style.top  = (e.clientY - offsetY) + "px";
-});
-
-/* -----------------
-   BASIC ENV CHECKS
-------------------*/
+// tests
 const tests = {
     "JavaScript Running": () => true,
-    "LocalStorage Support": () => typeof localStorage !== "undefined",
-    "Fetch API Support": () => typeof fetch !== "undefined",
-    "ES6 Arrow Functions": () => {
+    "LocalStorage": () => typeof localStorage !== "undefined",
+    "Fetch API": () => typeof fetch !== "undefined",
+    "Promise": () => typeof Promise !== "undefined",
+    "Arrow Functions": () => {
         try { eval("(()=>{})"); return true; }
         catch { return false; }
-    },
-    "Promise Support": () => typeof Promise !== "undefined"
+    }
 };
 
-const results = document.getElementById("results");
-
-for (let name in tests) {
+// run tests
+for (const name in tests) {
     const li = document.createElement("li");
-    let passed = false;
+    let result = false;
 
     try {
-        passed = tests[name]();
+        result = tests[name]();
     } catch {
-        passed = false;
+        result = false;
     }
 
-    li.textContent = name + ": " + (passed ? "PASS" : "FAIL");
-    li.className = passed ? "pass" : "fail";
+    li.textContent = name + ": " + (result ? "PASS" : "FAIL");
+    li.style.color = result ? "lime" : "red";
 
-    results.appendChild(li);
+    list.appendChild(li);
 }
-</script>
-
-</body>
-</html>
