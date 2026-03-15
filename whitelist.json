@@ -11,4 +11,10 @@
     "require": [],
     "scriptUrl": "https://raw.githubusercontent.com/pulgax-g/skibidality/refs/heads/main/kirka.js"
   }
+  {
+    "match": "https://kour.io/*",
+    "label": "kour",
+    "require": [],
+    "scriptUrl": "https://raw.githubusercontent.com/pulgax-g/skibidality/refs/heads/main/kour.js"
+  }
 ]
